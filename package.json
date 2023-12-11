@@ -1,0 +1,33 @@
+{
+  "name": "trabalhofinalppi-v2",
+  "version": "1.0.0",
+  "description": "Trabalho final da disciplina de PPI em ADS - desenvolvimento de um chat",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deivid-maia/TrabalhoFinalPPI-V2.git"
+  },
+  "keywords": [
+    "node",
+    "http",
+    "session",
+    "cookies",
+    "html"
+  ],
+  "author": "Deivid L. Muller Maia",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/deivid-maia/TrabalhoFinalPPI-V2/issues"
+  },
+  "homepage": "https://github.com/deivid-maia/TrabalhoFinalPPI-V2#readme",
+  "dependencies": {
+    "cookie-parser": "^1.4.6",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3"
+  }
+}
