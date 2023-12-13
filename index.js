@@ -5,15 +5,14 @@ import session from 'express-session';
 
 const porta = 3000;
 const host = '0.0.0.0';
-var listaUsuarios = [];
+const listaUsuarios = [];
 
 function processaCadastroUsuario(requisicao, resposta){
     //extrair os dados do corpo da requisição, além de validar os dados
 
     const dados = requisicao.body;
     let conteudoResposta = '';
-    let conteudoResposta2 = ''; // tentativa
-
+    
     // é necessário validar os dados enviados
     // a validação dos dados é de responsabilidade da aplicação servidora
     if (!(dados.nome && dados.dataNascimento && dados.nickName)){
@@ -185,43 +184,13 @@ app.use(express.urlencoded({extended: true}));
 //indicando para a aplicação como servir arquivos estáticos localizados na pasta 'paginas'
 app.use(express.static(path.join(process.cwd(),'paginas'))); // junto com a biblioteca path, faz a correção da localização da pasta pro deploy no vercel
 
-app.get('/', autenticar, (requisicao, resposta) => {
-
-    const DataUltimoAcesso = requisicao.cookies.DataUltimoAcesso;
-
-    const data = new Date();
-    resposta.cookie("DataUltimoAcesso", data.toLocaleString(), {
-        maxAge: 1000*60*60*24*30,
-        httpOnly: true
-    });
-
-    resposta.end(`
-        <!DOCTYPE html>
-            <head>
-                <meta charset="UTF-8">
-                <title> Menu do sistema </title>
-            </head>
-            <body>
-                <h1> MENU </h1>
-                <ul>
-                    <li> <a href="/cadastroUsuario.html"> Cadastrar Usuário </a> </li><br>
-                    <li> <a href="/chat.html">Acessar o chat</a></li>
-                </ul>
-            </body>
-            <footer>
-                <p>Seu último acesso nessa página foi em ${DataUltimoAcesso}</p>
-            </footer>
-        </html>
-        
-    `);
-})
-
 //endpoint login que irá processar o loggin da aplicação
 app.post('/login',(requisicao, resposta) =>{
     const usuario = requisicao.body.usuario;
     const senha = requisicao.body.senha;
     if(usuario && senha && (usuario === 'deivid') && (senha ==='112233')){
         requisicao.session.usuarioAutenticado = true;
+        requisicao.session.nomeUsuario = usuario;
         resposta.redirect('/');
     }
     else{
@@ -242,11 +211,90 @@ app.post('/login',(requisicao, resposta) =>{
 
 )
 
+app.get('/', autenticar, (requisicao, resposta) => {
+
+    const nomeUsuario = requisicao.session.nomeUsuario;
+    const DataUltimoAcesso = requisicao.cookies.DataUltimoAcesso;
+
+    const data = new Date();
+    resposta.cookie("DataUltimoAcesso", data.toLocaleString(), {
+        maxAge: 1000*60*60*24*30,
+        httpOnly: true
+    });
+
+    resposta.end(`
+        <!DOCTYPE html>
+            <head>
+                <meta charset="UTF-8">
+                <title> Menu do sistema </title>
+            </head>
+            <body>
+                <h1> MENU </h1>
+                <ul>
+                    <li> <a href="/cadastroUsuario.html"> Cadastrar Usuário </a> </li><br>
+                    <li> <a href="/chat">Acessar o chat</a></li>
+                </ul>
+            </body>
+            <footer>
+            <p>Olá <strong>${nomeUsuario}</strong> ! Seu último acesso nessa página foi em ${DataUltimoAcesso}</p>
+            </footer>
+        </html>
+        
+    `);
+})
+
+
 //rota para processar o cadastro de usuarios endpoint = '/cadastroUsuario'
-app.post('/cadastroUsuario', autenticar, processaCadastroUsuario);
+app.post('/cadastroUsuario',autenticar,processaCadastroUsuario);
+
+const listaMensagens = [];
+
+
 
 app.get('/chat', autenticar, (requisicao, resposta) => {
-    usuarioChat(listaUsuarios); // Passando a lista de usuários para a função usuarioChat
+    const usuarioChat = listaUsuarios.map(usuario => usuario.nickName);
+    const mensagensFormatadas = listaMensagens.map(mensagem => {
+        return {
+          user: mensagem.usuario,
+          text: mensagem.conteudo,
+          timestamp: mensagem.dataHora
+        };
+      });
+
+    const html = `<!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <title>Chat Básico</title>
+      <link rel="stylesheet" href="estilo.css">
+    </head>
+    <body>
+      <h1>Webchat Nextech Solutions</h1>
+      <div class="chat-container">
+        <div class="messages" id="messages" data-messages="${JSON.stringify(mensagensFormatadas)}">
+          <!-- Aqui serão exibidas as mensagens -->
+        </div>
+        <p>Enviar mensagem para</p>
+        <div class="input-area">
+          <select id="userSelect" required>
+            ${usuarioChat.map(usuario => `<option value="${usuario}">${usuario}</option>`).join('')}
+            </select>
+          <input type="text" id="messageInput" placeholder="Digite sua mensagem..." required>
+          <button onclick="sendMessage()">Enviar</button>
+        </div>
+      </div> <!-- Fechar a div chat-container -->
+      
+      <div class="footer-buttons">
+        <button onclick="window.location.href='/'">Voltar ao Menu</button>
+        <button onclick="window.location.href='/cadastroUsuario.html'">Cadastrar Novo Usuário</button>
+      </div>
+      
+      <script src="script.js"></script>
+    </body>
+    </html>`;
+
+    resposta.end(html);
+   
 });
 
 

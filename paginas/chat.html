@@ -13,16 +13,19 @@
     </div>
     <p>Enviar mensagem para</p>
     <div class="input-area">
-      
-      <select id="userSelect">
-        <option value="usuario1">Usuário 1</option>
-        <option value="usuario2">Usuário 2</option>
-        <!-- Adicione mais opções conforme necessário -->
-      </select>
+      <select id="userSelect" required>
+        ${usuarioChat.map(usuario => `<option value="${usuario}">${usuario}</option>`).join('')}
+        </select>
       <input type="text" id="messageInput" placeholder="Digite sua mensagem..." required>
       <button onclick="sendMessage()">Enviar</button>
     </div>
+  </div> <!-- Fechar a div chat-container -->
+  
+  <div class="footer-buttons">
+    <button onclick="window.location.href='/'">Voltar ao Menu</button>
+    <button onclick="window.location.href='/cadastroUsuario.html'">Cadastrar Novo Usuário</button>
   </div>
+  
   <script src="script.js"></script>
 </body>
 </html>
