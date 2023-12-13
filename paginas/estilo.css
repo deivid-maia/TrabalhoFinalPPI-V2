@@ -46,6 +46,12 @@ body {
   margin: 2px;
 }
 
+.textColor{
+  color: #147172;
+  font-size: 18px;
+  font-weight: bolder;
+}
+
 input[type="text"]{
   padding: 8px;
   margin-right: 10px;
@@ -86,6 +92,10 @@ h1{
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+h2{
+  color:#147172
+}
+
 p{
   margin-left: 14px;
   font-weight: bold;
@@ -101,6 +111,3 @@ p{
 
 }
 
-strong{
-  color: #147172;
-}

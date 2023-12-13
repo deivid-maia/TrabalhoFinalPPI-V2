@@ -238,7 +238,7 @@ app.get('/', autenticar, (requisicao, resposta) => {
                 </ul>
             </body>
             <footer>
-            <p>Olá <strong>${nomeUsuario}</strong> ! Seu último acesso nessa página foi em ${DataUltimoAcesso}</p>
+            <p>Olá <strong class = "textColor">${nomeUsuario}</strong> ! Seu último acesso nessa página foi em ${DataUltimoAcesso}</p>
             </footer>
         </html>
         
