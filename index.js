@@ -105,6 +105,7 @@ function processaCadastroUsuario(requisicao, resposta){
     <head>
         <meta charset="UTF-8">
         <title> Menu do sistema </title>
+        
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     </head>
     <body>
@@ -226,6 +227,7 @@ app.get('/', autenticar, (requisicao, resposta) => {
         <!DOCTYPE html>
             <head>
                 <meta charset="UTF-8">
+                <link rel="stylesheet" href="estilo.css">
                 <title> Menu do sistema </title>
             </head>
             <body>
@@ -286,7 +288,7 @@ app.get('/chat', autenticar, (requisicao, resposta) => {
       
       <div class="footer-buttons">
         <button onclick="window.location.href='/'">Voltar ao Menu</button>
-        <button onclick="window.location.href='/cadastroUsuario.html'">Cadastrar Novo Usuário</button>
+        <button onclick="window.location.href='/cadastroUsuario.html'">Cadastrar Usuário</button>
       </div>
       
       <script src="script.js"></script>
