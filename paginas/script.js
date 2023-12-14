@@ -12,7 +12,7 @@ function sendMessage() {
 
       const newMessage = document.createElement('div');
       newMessage.classList.add('message');
-      newMessage.innerHTML = `<strong>${selectedUser}:</strong> ${message}
+      newMessage.innerHTML = `<strong>mensagem para ${selectedUser}:</strong> ${message}
                               <div class="dataHora">enviada em: ${dataFormatada}</div>`
 
       messages.appendChild(newMessage);

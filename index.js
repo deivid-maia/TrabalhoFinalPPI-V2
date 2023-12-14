@@ -1,6 +1,6 @@
 import cookieParser from 'cookie-parser';
 import express from 'express';
-import path from 'path'; //lidar com as urls 
+import path from 'path';
 import session from 'express-session';
 
 const porta = 3000;
@@ -8,15 +8,13 @@ const host = '0.0.0.0';
 const listaUsuarios = [];
 
 function processaCadastroUsuario(requisicao, resposta){
-    //extrair os dados do corpo da requisição, além de validar os dados
+   
 
     const dados = requisicao.body;
     let conteudoResposta = '';
-    
-    // é necessário validar os dados enviados
-    // a validação dos dados é de responsabilidade da aplicação servidora
+      
     if (!(dados.nome && dados.dataNascimento && dados.nickName)){
-        //estão faltando dados do usuário
+      
         conteudoResposta = `
         <!DOCTYPE html>
         <html lang="en">
@@ -97,9 +95,9 @@ function processaCadastroUsuario(requisicao, resposta){
         
     }
 
-    //adiciona um novo usuario na lista de usuarios já cadastrados
+    
     listaUsuarios.push(usuario);
-    //retornar a lista de usuarios
+    
     let conteudoResposta = `
     <!DOCTYPE html>
     <head>
@@ -143,7 +141,7 @@ function processaCadastroUsuario(requisicao, resposta){
 
         resposta.end(conteudoResposta);
         
-     // final do if/else de validação
+     
 }                    
 
 }
@@ -161,28 +159,25 @@ function autenticar(requisicao, resposta, next){
     }
 }
 
-// ATIVANDO A CAPACIDADE DE MANIPULAR COOKIES
+
 app.use(cookieParser());
 
-//ATIVAR UMA NOVA CAPACIDADE PARA ESSA APLICAÇÃO >>>> MEMORIZAR OS DADOS COM QUEM O SERVIDOR ESTÁ SE COMUNICANDO
-//DURANTE O USO DO SISTEMA , A APLICAÇÃO SABERÁ, DENTRO DE UMA SESSÃO VÁLIDA, COM QUEM ELA SE COMUNICA
+
 app.use(session({
     secret:"$enh@d4$e$$!0n",
     resave: true, // atualiza a sessão, mesmo que não tenha alterações a cada requisição
     saveUninitialized: true,
     cookie: {
-        //tempo de vida da sessão
+        
         maxAge: 1000 * 60 * 30 // 30 minutos
     }
 
 }))
 
-// ativar a extensão que manipula requisicoes HTTP
-//opcao false ativa a extensão
-// opcap true ativa a extensão qs(manipula objetos(lista, aninhados))
+
 app.use(express.urlencoded({extended: true}));
 
-//indicando para a aplicação como servir arquivos estáticos localizados na pasta 'paginas'
+
 app.use(express.static(path.join(process.cwd(),'paginas'))); // junto com a biblioteca path, faz a correção da localização da pasta pro deploy no vercel
 
 //endpoint login que irá processar o loggin da aplicação
@@ -246,7 +241,7 @@ app.get('/', autenticar, (requisicao, resposta) => {
 })
 
 
-//rota para processar o cadastro de usuarios endpoint = '/cadastroUsuario'
+
 app.post('/cadastroUsuario',autenticar,processaCadastroUsuario);
 
 const listaMensagens = [];
@@ -267,7 +262,7 @@ app.get('/chat', autenticar, (requisicao, resposta) => {
     <html lang="en">
     <head>
       <meta charset="UTF-8">
-      <title>Chat Básico</title>
+      <title>Web Chat Nextech</title>
       <link rel="stylesheet" href="estilo.css">
     </head>
     <body>
@@ -276,7 +271,7 @@ app.get('/chat', autenticar, (requisicao, resposta) => {
         <div class="messages" id="messages" data-messages="${JSON.stringify(mensagensFormatadas)}">
           <!-- Aqui serão exibidas as mensagens -->
         </div>
-        <p>Enviar mensagem para</p>
+        <p>Enviar mensagem para o usuário:</p>
         <div class="input-area">
           <select id="userSelect" required>
             ${usuarioChat.map(usuario => `<option value="${usuario}">${usuario}</option>`).join('')}
