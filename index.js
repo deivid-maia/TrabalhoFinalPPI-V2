@@ -221,7 +221,10 @@ app.get('/', autenticar, (requisicao, resposta) => {
 
     const opcoesData = {
         timeZone: 'America/Sao_Paulo', // forma que encontrei para que nao mostre a hora do servidor do deploy e sim o nosso.
-        timeZoneName: 'short'
+        timeZoneName: 'short',
+        day: 'numeric',
+        month: 'numeric',
+        year: 'numeric'
     }
 
     resposta.cookie("DataUltimoAcesso", data.toLocaleString(undefined, opcoesData), {
