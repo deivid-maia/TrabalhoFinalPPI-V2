@@ -218,7 +218,13 @@ app.get('/', autenticar, (requisicao, resposta) => {
     const DataUltimoAcesso = requisicao.cookies.DataUltimoAcesso;
 
     const data = new Date();
-    resposta.cookie("DataUltimoAcesso", data.toLocaleString(), {
+
+    const opcoesData = {
+        timeZone: 'America/Sao_Paulo', // forma que encontrei para que nao mostre a hora do servidor do deploy e sim o nosso.
+        timeZoneName: 'short'
+    }
+
+    resposta.cookie("DataUltimoAcesso", data.toLocaleString(undefined, opcoesData), {
         maxAge: 1000*60*60*24*30,
         httpOnly: true
     });
